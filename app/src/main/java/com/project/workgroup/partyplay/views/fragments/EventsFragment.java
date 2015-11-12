@@ -3,19 +3,27 @@ package com.project.workgroup.partyplay.views.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.project.workgroup.partyplay.R;
+import com.project.workgroup.partyplay.model.entities.Event;
+import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
 import com.project.workgroup.partyplay.mvp.views.EventsView;
 import com.project.workgroup.partyplay.views.RecyclerClickListener;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 public class EventsFragment extends Fragment  implements EventsView, RecyclerClickListener {
 
 
-    //@Inject  EventListPresenter eventListPresenter;
+    private static final String TAG = EventsFragment.class.getName() ;
+    @Inject  EventListPresenter eventListPresenter;
 
 
     public static EventsFragment newInstance(String param1, String param2) {
@@ -26,7 +34,7 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
     }
 
     public EventsFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -42,11 +50,23 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
         return inflater.inflate(R.layout.fragment_eents, container, false);
     }
 
-    /*
-    @Override
-    public void bindEventList(List<Event> events) {
+
+
+    private void initializePresenter(){
+        eventListPresenter.attachView(this);
+        eventListPresenter.onCreate();
+        Log.e(TAG,"Se inicializo el presenter");
     }
 
+    @Override
+    public void onElementClick(int position, View sharedView, ImageView characterImageView) {
+
+    }
+
+    @Override
+    public void bindEventList(List<Event> events) {
+
+    }
 
     @Override
     public void showEventList() {
@@ -59,27 +79,22 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
     }
 
     @Override
-    public void hideLoadingIndicador() {
+    public void hideLoadingIndicator() {
 
     }
 
     @Override
-    public void showLoadinView() {
+    public void showLoadingView() {
 
     }
 
     @Override
-    public void hideLoadinView() {
+    public void hideLoadingView() {
 
     }
 
     @Override
-    public void showLightError() {
-
-    }
-
-    @Override
-    public void showErrorView(String errorMenssage) {
+    public void showErrorView(String errorMessage) {
 
     }
 
@@ -95,32 +110,6 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
 
     @Override
     public void hideEmptyIndicator() {
-
-    }
-
-    @Override
-    public void updateEventList(int eventsLimit) {
-
-    }
-
-    @Override
-    public ActivityOptions getActivityOptions(int position, View clickView) {
-        return null;
-    }
-
-    @Override
-    public void onElementClick(int position, View sharedView, ImageView characterImageView) {
-
-    }
-    */
-
-    private void initializePresenter(){
-        //eventListPresenter.attachView(this);
-        //eventListPresenter.onCreate();
-    }
-
-    @Override
-    public void onElementClick(int position, View sharedView, ImageView characterImageView) {
 
     }
 }

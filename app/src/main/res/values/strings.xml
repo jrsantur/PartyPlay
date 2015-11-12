@@ -10,5 +10,6 @@
     <string name="error.network.uknownhost">Can\'t connect with party API</string>
     <string name="error.network.party_server">Party API Server has failed</string>
 
-
+    <string name="error.network.image_not_found">Image not found</string>
+    <string name="message.loading.more_events">Loading more events</string>
 </resources>

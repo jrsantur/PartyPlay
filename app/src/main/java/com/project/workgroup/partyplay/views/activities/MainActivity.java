@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getName();
-    @Inject EventListPresenter mEventListPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity
                 .activityModule(new ActivityModule(this))
                 .appComponent(app.getAppComponent())
                 .build().inject(this);
-
         Log.e(TAG, "Se inicio las dependencias");
     }
 

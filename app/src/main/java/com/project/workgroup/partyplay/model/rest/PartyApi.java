@@ -14,7 +14,7 @@ import rx.Observable;
  */
 public interface PartyApi {
 
-    String END_POINT        = "piuradivierte.hol.es/PiuraDivierte/index.php/";
+    String END_POINT        = "http://www.piuradivierte.hol.es/PiuraDivierte/index.php/";
     String PARAM_API_KEY    = "apikey";
     String PARAM_HASH       = "hash";
     String PARAM_TIMESTAMP  = "ts";
