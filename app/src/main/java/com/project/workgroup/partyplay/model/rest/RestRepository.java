@@ -57,10 +57,13 @@ public class RestRepository implements Repository {
 
     @Override
     public Observable<List<Event>> getEvents() {
+        Log.e(TAG, "se obtibieron los eventos");
         return mPartyApi.getEvents()
                 .onErrorResumeNext(throwable -> {
                     boolean serverError = throwable.getMessage().equals(HttpErrors.SERVER_ERROR);
                     return Observable.error((serverError) ? new ServerErrorException() : new UknownErrorException());
                 });
+
+
     }
 }
