@@ -1,7 +1,10 @@
 package com.project.workgroup.partyplay.views.activities;
 
+
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,35 +19,79 @@ import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.injector.components.DaggerPartyComponent;
 import com.project.workgroup.partyplay.injector.modules.ActivityModule;
 import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
+import com.project.workgroup.partyplay.views.fragments.EventsFragment;
 
 import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getName();
 
-
+    @InjectView(R.id.toolbar) Toolbar toolbar;
+    @InjectView(R.id.drawer_layout) DrawerLayout drawer;
+    @InjectView(R.id.nav_view) NavigationView navigationView;
     @Inject public static EventListPresenter eventListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.inject(this);
+
+        initializeDependencyInjector();
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if(navigationView!=null){
+            setupDrawerContent(navigationView);
+        }
+        //navigationView.setNavigationItemSelectedListener(this);
 
-        initializeDependencyInjector();
+        /*
+        if(!PrefUtils.isTosAccepted(this)){
+            Intent i = new Intent(this, WelcomeActivity.class);
+            startActivity(i);
+            finish();
+        }*/
+
     }
+
+    public void setupDrawerContent(NavigationView navigationView){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                String title = menuItem.getTitle().toString();
+                selectItem(title);
+                return true;
+            }
+        });
+    }
+    private void selectItem(String title){
+        Bundle args = new Bundle();
+        Fragment fragment;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if(title.equals("Eventos")){
+            args.putString(EventsFragment.ARG_SECTION_TITLE, title);
+            fragment = EventsFragment.newInstance(title);
+            fragment.setArguments(args);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_content, fragment)
+                    .commit();
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {

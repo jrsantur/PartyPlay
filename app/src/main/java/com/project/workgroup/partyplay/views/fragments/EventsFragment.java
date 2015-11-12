@@ -1,8 +1,8 @@
 package com.project.workgroup.partyplay.views.fragments;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,25 +11,25 @@ import android.widget.ImageView;
 
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.model.entities.Event;
-import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
 import com.project.workgroup.partyplay.mvp.views.EventsView;
 import com.project.workgroup.partyplay.views.RecyclerClickListener;
 import com.project.workgroup.partyplay.views.activities.MainActivity;
 
 import java.util.List;
 
-import javax.inject.Inject;
+public class EventsFragment extends Fragment implements EventsView, RecyclerClickListener {
 
-public class EventsFragment extends Fragment  implements EventsView, RecyclerClickListener {
 
+    public static final String ARG_SECTION_TITLE = "section_number";
 
     private static final String TAG = EventsFragment.class.getName() ;
     //@Inject  EventListPresenter eventListPresenter;
 
 
-    public static EventsFragment newInstance(String param1, String param2) {
+    public static EventsFragment newInstance(String sectionTitle) {
         EventsFragment fragment = new EventsFragment();
         Bundle args = new Bundle();
+        args.getString(ARG_SECTION_TITLE, sectionTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,7 +56,7 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
     private void initializePresenter(){
         MainActivity.eventListPresenter.attachView(this);
         MainActivity.eventListPresenter.onCreate();
-        Log.e(TAG,"Se inicializo el presenter");
+        Log.e(TAG,"Se creo el presenter");
     }
 
 
