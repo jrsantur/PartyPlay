@@ -20,11 +20,12 @@ import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
 import javax.inject.Inject;
 
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getName();
 
+
+    @Inject public static EventListPresenter eventListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity
                 .build().inject(this);
         Log.e(TAG, "Se inicio las dependencias");
     }
+
 
 
 

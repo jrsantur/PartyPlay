@@ -14,6 +14,7 @@ import com.project.workgroup.partyplay.model.entities.Event;
 import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
 import com.project.workgroup.partyplay.mvp.views.EventsView;
 import com.project.workgroup.partyplay.views.RecyclerClickListener;
+import com.project.workgroup.partyplay.views.activities.MainActivity;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
 
 
     private static final String TAG = EventsFragment.class.getName() ;
-    @Inject  EventListPresenter eventListPresenter;
+    //@Inject  EventListPresenter eventListPresenter;
 
 
     public static EventsFragment newInstance(String param1, String param2) {
@@ -53,10 +54,11 @@ public class EventsFragment extends Fragment  implements EventsView, RecyclerCli
 
 
     private void initializePresenter(){
-        eventListPresenter.attachView(this);
-        eventListPresenter.onCreate();
+        MainActivity.eventListPresenter.attachView(this);
+        MainActivity.eventListPresenter.onCreate();
         Log.e(TAG,"Se inicializo el presenter");
     }
+
 
     @Override
     public void onElementClick(int position, View sharedView, ImageView characterImageView) {
