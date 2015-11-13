@@ -2,6 +2,7 @@ package com.project.workgroup.partyplay.mvp.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.domain.GetEventsUsecase;
@@ -23,6 +24,7 @@ import rx.Subscription;
  */
 public class EventListPresenter  implements Presenter{
 
+    public static final String TAG = EventListPresenter.class.getName();
     private final GetEventsUsecase mEventsUsecase;
     private Context mContext;
     Subscription mEventsSubscription;
@@ -36,13 +38,10 @@ public class EventListPresenter  implements Presenter{
         mEvents = new ArrayList<>();
     }
 
-
     @Override
     public void onCreate() {
         askPorEvents();
     }
-
-
 
     @Override
     public void onStart() {
@@ -64,9 +63,11 @@ public class EventListPresenter  implements Presenter{
     public void attachView(View v) {
         mEventsView = (EventsView) v;
     }
-    private void onListEndReached(){
+
+    public void onListEndReached(){
         if(!mIsTheCharacterRequestRunning){
             //askForNewEvents();
+            Log.e(TAG, "estas en onListEndReached");
         }
     }
 

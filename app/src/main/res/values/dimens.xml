@@ -18,4 +18,11 @@
 
     <dimen name="item_personalizar_width">96dp</dimen>
     <dimen name="item_personalizar_heigth">96dp</dimen>
+
+    <dimen name="insets">2dp</dimen>
+    <dimen name="elevation.normal">8dp</dimen>
+
+    <dimen name="toolbarHeight">56dp</dimen>
+
+
 </resources>

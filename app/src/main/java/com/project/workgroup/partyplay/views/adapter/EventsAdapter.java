@@ -26,10 +26,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     private Context mContext;
 
 
-    public EventsAdapter(List<Event> events , Context context, RecyclerClickListener recyclerClickListener){
+    public EventsAdapter(List<Event> events , Context context){
         this.mEventList = events;
         this.mContext = context;
-        this.mRecyclerClickListener = recyclerClickListener;
+
+    }
+
+    public void setmRecyclerListListener(RecyclerClickListener mRecyclerClickListener){
+        this.mRecyclerClickListener = mRecyclerClickListener;
     }
 
     @Override

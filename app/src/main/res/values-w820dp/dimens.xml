@@ -5,4 +5,11 @@
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="dim_width_height_maps">250dp</dimen>
     <dimen name="dim_width_height_phone">100dp</dimen>
+
+
+    <dimen name="insets">2dp</dimen>
+    <dimen name="elevation.normal">8dp</dimen>
+
+    <dimen name="toolbarHeight">56dp</dimen>
+
 </resources>
