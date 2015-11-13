@@ -5,9 +5,8 @@
  */
 package com.project.workgroup.partyplay.views;
 
-import android.view.View;
 import android.widget.ImageView;
 
 public interface RecyclerClickListener {
-    void onElementClick(int position, View sharedView, ImageView characterImageView);
+    void onElementClick(int position, ImageView characterImageView);
 }

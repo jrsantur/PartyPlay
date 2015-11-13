@@ -24,23 +24,23 @@ import com.project.workgroup.partyplay.views.fragments.EventsFragment;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getName();
 
-    @InjectView(R.id.toolbar) Toolbar toolbar;
-    @InjectView(R.id.drawer_layout) DrawerLayout drawer;
-    @InjectView(R.id.nav_view) NavigationView navigationView;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.drawer_layout) DrawerLayout drawer;
+    @Bind(R.id.nav_view) NavigationView navigationView;
     @Inject public static EventListPresenter eventListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         initializeDependencyInjector();
         setSupportActionBar(toolbar);
@@ -66,15 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setupDrawerContent(NavigationView navigationView){
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                String title = menuItem.getTitle().toString();
-                selectItem(title);
-                return true;
-            }
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            menuItem.setChecked(true);
+            String title = menuItem.getTitle().toString();
+            selectItem(title);
+            return true;
         });
+
+
     }
     private void selectItem(String title){
         Bundle args = new Bundle();
@@ -89,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.main_content, fragment)
                     .commit();
         }
+
+        drawer.closeDrawers();
+        setTitle(title);
 
     }
 

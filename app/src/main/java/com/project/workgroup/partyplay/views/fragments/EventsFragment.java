@@ -44,6 +44,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
         initializePresenter();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
 
 
     @Override
-    public void onElementClick(int position, View sharedView, ImageView characterImageView) {
+    public void onElementClick(int position, ImageView characterImageView) {
 
     }
 
