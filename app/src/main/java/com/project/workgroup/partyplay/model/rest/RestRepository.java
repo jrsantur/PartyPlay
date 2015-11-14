@@ -39,7 +39,8 @@ public class RestRepository implements Repository {
                 .registerTypeAdapter(new TypeToken<List<Event>>() {}.getType(), new PartyResultEventDeserialiser())
                 .create();
 
-        Retrofit partyApiAdapter =  new Retrofit.Builder().baseUrl(PartyApi.END_POINT)
+        Retrofit partyApiAdapter =  new Retrofit.Builder()
+                .baseUrl(PartyApi.END_POINT)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(cliente).build();
@@ -52,7 +53,7 @@ public class RestRepository implements Repository {
     @Override
     public Observable<Event> getEvent(int eventId) {
         return mPartyApi.getEventById(eventId).flatMap(
-                events -> Observable.just(events.get(0)));
+                event -> Observable.just(event.get(0)));
     }
 
     @Override
@@ -63,7 +64,6 @@ public class RestRepository implements Repository {
                     boolean serverError = throwable.getMessage().equals(HttpErrors.SERVER_ERROR);
                     return Observable.error((serverError) ? new ServerErrorException() : new UknownErrorException());
                 });
-
 
     }
 }

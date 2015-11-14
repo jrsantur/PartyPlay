@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Junior on 11/11/2015.
  */
-public class GetEventsUsecase implements Usecase {
+public class GetEventsUsecase implements Usecase<List<Event>> {
 
     public static final String TAG = GetEventsUsecase.class.getName();
 
@@ -25,13 +25,17 @@ public class GetEventsUsecase implements Usecase {
 
     @Inject public GetEventsUsecase(Repository repository){
         mRepository = repository;
-        Log.e(TAG, "se injecto GetEventsUsecase");
+        if(mRepository!=null){
+            Log.e(TAG, "se injecto GetEventsUsecase y no es nulo");
+        }
     }
 
     @Override
     public Observable<List<Event>> execute() {
+        Log.e(TAG,"se ejecuto el observable");
         return mRepository.getEvents()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
+
     }
 }

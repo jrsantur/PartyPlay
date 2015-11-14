@@ -1,11 +1,9 @@
 package com.project.workgroup.partyplay.model.entities;
 
-import java.io.Serializable;
-
 /**
  * Created by Junior on 09/10/2015.
  */
-public class Event implements Serializable {
+public class Event{
 
     private int id;
     private String title;

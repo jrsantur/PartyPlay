@@ -2,9 +2,7 @@ package com.project.workgroup.partyplay.model.repository;
 
 
 import com.project.workgroup.partyplay.model.entities.Event;
-
 import java.util.List;
-
 import rx.Observable;
 
 /**

@@ -44,7 +44,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-
+            holder.bindEvent(mEventList.get(position));
     }
 
     @Override
@@ -55,6 +55,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     class EventViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener{
 
+
+        private final RecyclerClickListener onClickListener;
         //inyectando views
         @Bind(R.id.fecha_event) TextView fechaEvent;
         @Bind(R.id.title_event) TextView titleEvent;
@@ -64,7 +66,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         public EventViewHolder(View itemView, final RecyclerClickListener recyclerClickListener) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-
+            imageEvent.setOnTouchListener(this);
+            this.onClickListener = recyclerClickListener;
         }
 
         public void bindEvent(Event event){
@@ -77,11 +80,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         private void bindListener(View itemView , final RecyclerClickListener recyclerClickListener){
             itemView.setOnClickListener(v ->
-                    recyclerClickListener.onElementClick(getPosition(), imageEvent));
+                    recyclerClickListener.onElementClick(getPosition(),itemView ,imageEvent));
         }
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            return false;
+            if (event.getAction() == MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_MOVE) {
+
+                onClickListener.onElementClick(getPosition(),v, imageEvent);
+            }
+            return true;
         }
     }
 }

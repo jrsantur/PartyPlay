@@ -36,11 +36,13 @@ public class EventListPresenter  implements Presenter{
         this.mContext = context;
         this.mEventsUsecase = mEventsUsecase;
         mEvents = new ArrayList<>();
+        Log.e("EventListPresenter", "Se injecto EventListPresenter ");
     }
 
     @Override
     public void onCreate() {
         askPorEvents();
+        Log.e("EventListpresenter","estas en onCreate()");
     }
 
     @Override
@@ -61,13 +63,14 @@ public class EventListPresenter  implements Presenter{
 
     @Override
     public void attachView(View v) {
+        Log.e("EventListPresenter","Se adjunto la vista");
         mEventsView = (EventsView) v;
     }
 
     public void onListEndReached(){
         if(!mIsTheCharacterRequestRunning){
             //askForNewEvents();
-            Log.e(TAG, "estas en onListEndReached");
+            Log.e(TAG, "estas en onListEndReached, final de la lista");
         }
     }
 
@@ -75,17 +78,23 @@ public class EventListPresenter  implements Presenter{
     public void attachIncomingIntent(Intent intent) {
 
     }
+    @SuppressWarnings("Convert2MethodRef")
     private void askPorEvents() {
         mIsTheCharacterRequestRunning = true;
         showLoadingUI();
         mEventsSubscription = mEventsUsecase.execute().subscribe(events -> {
+            Log.e("EventListPresenter.mEventsSubscription","se ejecuto el metodo");
             mEvents.addAll(events);
             mEventsView.bindEventList(mEvents);
             mEventsView.showEventList();
             mEventsView.hideEmptyIndicator();
             mIsTheCharacterRequestRunning = false ;
-        }, error -> showErrorView(error) );
+        }, this::showErrorView);
+        if(mEventsSubscription==null || mEventsUsecase == null ){
+            Log.e("EventListPresenter","mEventsSubscription es nulo");
+        }
 
+        Log.e("EventListPresenter","Preguntando por los eventos");
     }
 
     private void showLoadingUI() {

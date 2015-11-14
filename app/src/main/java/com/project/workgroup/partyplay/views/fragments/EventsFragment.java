@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.model.entities.Event;
@@ -25,12 +26,13 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
 
 
     public static final String ARG_SECTION_TITLE = "section_number";
-
+    //@Bind(R.id.loadView)
     private static final String TAG = EventsFragment.class.getName() ;
 
     RecyclerView mRecyclerView;
-
     EventsAdapter mEventsAdapter;
+    ProgressBar loadingView;
+    //LoadingView loadingView = new LoadingView(getContext());
 
     public static EventsFragment newInstance(String sectionTitle) {
         EventsFragment fragment = new EventsFragment();
@@ -47,7 +49,8 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializePresenter();
+
+
     }
 
     @Override
@@ -72,7 +75,9 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_eents, container, false);
+        loadingView = (ProgressBar) rootView.findViewById(R.id.loadView);
         initializeRecyclerView(rootView);
+        initializePresenter();
 
         return rootView;
     }
@@ -82,6 +87,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new RecyclerInsetsDecoration(getContext()));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
+        Log.e("Fragment Manager","Se inicializo el frgamento");
     }
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -101,12 +107,12 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     private void initializePresenter(){
         MainActivity.eventListPresenter.attachView(this);
         MainActivity.eventListPresenter.onCreate();
-        Log.e(TAG,"Se creo el presenter");
+        Log.e("EventsFragment", "se inicialializo el presenter");
     }
 
 
     @Override
-    public void onElementClick(int position, ImageView characterImageView) {
+    public void onElementClick(int position, View view  ,ImageView characterImageView) {
 
     }
 
@@ -115,16 +121,19 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
         mEventsAdapter = new EventsAdapter(events, getContext());
         mEventsAdapter.setmRecyclerListListener(this);
         mRecyclerView.setAdapter(mEventsAdapter);
+        Log.e("EventsFragment", "Estas en el adaptador");
     }
 
     @Override
     public void showEventList() {
-
+        if(mRecyclerView.getVisibility()==View.GONE || mRecyclerView.getVisibility() == View.INVISIBLE ){
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideEventsList() {
-
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -134,12 +143,12 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
 
     @Override
     public void showLoadingView() {
-
+        loadingView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoadingView() {
-
+        loadingView.setVisibility(View.GONE);
     }
 
     @Override

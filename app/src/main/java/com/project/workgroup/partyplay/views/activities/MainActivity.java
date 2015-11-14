@@ -23,11 +23,11 @@ import com.project.workgroup.partyplay.views.fragments.EventsFragment;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -164,4 +164,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    /*
+    @Override
+    public void onElementClick(int position, View v, ImageView characterImageView) {
+        //intent para la nueva actividad
+    }
+    */
 }
