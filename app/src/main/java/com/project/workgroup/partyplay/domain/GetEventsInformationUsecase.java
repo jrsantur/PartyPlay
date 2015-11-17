@@ -1,5 +1,6 @@
 package com.project.workgroup.partyplay.domain;
 
+
 import android.util.Log;
 
 import com.project.workgroup.partyplay.model.entities.Event;
@@ -20,12 +21,14 @@ public class GetEventsInformationUsecase implements Usecase<Event> {
     private final Repository mRepository;
     private int mEventId;
 
-    @Inject public GetEventsInformationUsecase(int mEventId, Repository mRepository){
+    @Inject
+    public GetEventsInformationUsecase(int mEventId, Repository mRepository){
         this.mEventId = mEventId;
         this.mRepository = mRepository;
 
         Log.e(TAG, "se inyecto GetEventsInformationUsecas ");
     }
+
 
     @Override
     public Observable<Event> execute() {
@@ -33,4 +36,5 @@ public class GetEventsInformationUsecase implements Usecase<Event> {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 }

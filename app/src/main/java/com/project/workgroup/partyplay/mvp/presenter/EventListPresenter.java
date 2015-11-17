@@ -1,5 +1,6 @@
 package com.project.workgroup.partyplay.mvp.presenter;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -22,7 +23,7 @@ import rx.Subscription;
 /**
  * Created by Junior on 11/11/2015.
  */
-public class EventListPresenter  implements Presenter{
+public class EventListPresenter implements Presenter {
 
     public static final String TAG = EventListPresenter.class.getName();
     private final GetEventsUsecase mEventsUsecase;
@@ -32,17 +33,60 @@ public class EventListPresenter  implements Presenter{
     private EventsView mEventsView;
     private boolean mIsTheCharacterRequestRunning;
 
-    @Inject EventListPresenter(Context context, GetEventsUsecase mEventsUsecase){
+    @Inject  EventListPresenter(Context context, GetEventsUsecase mEventsUsecase){
         this.mContext = context;
         this.mEventsUsecase = mEventsUsecase;
         mEvents = new ArrayList<>();
         Log.e("EventListPresenter", "Se injecto EventListPresenter ");
     }
 
-    @Override
-    public void onCreate() {
-        askPorEvents();
-        Log.e("EventListpresenter","estas en onCreate()");
+    public void onListEndReached(){
+        if(!mIsTheCharacterRequestRunning){
+            //askForNewEvents();
+            Log.e(TAG, "estas en onListEndReached, final de la lista");
+        }
+    }
+
+    @SuppressWarnings("Convert2MethodRef")
+    private void askPorEvents() {
+        mIsTheCharacterRequestRunning = true;
+        showLoadingUI();
+        if(mEventsUsecase==null){
+            Log.e(".mEventsSubscription","es nulo");
+        }
+        mEventsSubscription = mEventsUsecase.execute().subscribe(events -> {
+            Log.e("EventListPresenter.mEventsSubscription","se ejecuto el metodo");
+            mEvents.addAll(events);
+            mEventsView.bindEventList(mEvents);
+            mEventsView.showEventList();
+            mEventsView.hideEmptyIndicator();
+            mIsTheCharacterRequestRunning = false ;
+        }, this::showErrorView);
+
+        //Log.e(TAG, "askPorEvents() called with: " + mEvents.get(0).getTitle().toString());
+        hideLoadingUI();
+
+    }
+
+    private void showLoadingUI() {
+        mEventsView.hideErrorView();
+        mEventsView.showLoadingView();
+    }
+
+    private void hideLoadingUI(){
+        mEventsView.hideLoadingView();
+    }
+
+    private void showErrorView(Throwable error){
+        if(error instanceof NetworkErrorException){
+            String errorMessage = mContext.getString(R.string.error_network_uknownhost);
+            mEventsView.showErrorView(errorMessage);
+        }else if(error instanceof ServerErrorException){
+            String errorMessage = mContext.getString(R.string.error_network_party_server);
+            mEventsView.showErrorView(errorMessage);
+        }
+        mEventsView.hideEmptyIndicator();
+        mEventsView.hideEventsList();
     }
 
     @Override
@@ -67,51 +111,16 @@ public class EventListPresenter  implements Presenter{
         mEventsView = (EventsView) v;
     }
 
-    public void onListEndReached(){
-        if(!mIsTheCharacterRequestRunning){
-            //askForNewEvents();
-            Log.e(TAG, "estas en onListEndReached, final de la lista");
-        }
-    }
-
     @Override
     public void attachIncomingIntent(Intent intent) {
 
     }
-    @SuppressWarnings("Convert2MethodRef")
-    private void askPorEvents() {
-        mIsTheCharacterRequestRunning = true;
-        showLoadingUI();
-        mEventsSubscription = mEventsUsecase.execute().subscribe(events -> {
-            Log.e("EventListPresenter.mEventsSubscription","se ejecuto el metodo");
-            mEvents.addAll(events);
-            mEventsView.bindEventList(mEvents);
-            mEventsView.showEventList();
-            mEventsView.hideEmptyIndicator();
-            mIsTheCharacterRequestRunning = false ;
-        }, this::showErrorView);
-        if(mEventsSubscription==null || mEventsUsecase == null ){
-            Log.e("EventListPresenter","mEventsSubscription es nulo");
-        }
 
-        Log.e("EventListPresenter","Preguntando por los eventos");
+    @Override
+    public void onCreate() {
+        askPorEvents();
+        Log.e("EventListpresenter","estas en onCreate()");
     }
 
-    private void showLoadingUI() {
-        mEventsView.hideErrorView();
-        mEventsView.showLoadingView();
-    }
-
-    private void showErrorView(Throwable error){
-        if(error instanceof NetworkErrorException){
-            String errorMessage = mContext.getString(R.string.error_network_uknownhost);
-            mEventsView.showErrorView(errorMessage);
-        }else if(error instanceof ServerErrorException){
-            String errorMessage = mContext.getString(R.string.error_network_party_server);
-            mEventsView.showErrorView(errorMessage);
-        }
-        mEventsView.hideEmptyIndicator();
-        mEventsView.hideEventsList();
-    }
 
 }

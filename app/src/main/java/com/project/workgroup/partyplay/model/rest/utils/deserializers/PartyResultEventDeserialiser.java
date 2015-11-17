@@ -1,6 +1,10 @@
 package com.project.workgroup.partyplay.model.rest.utils.deserializers;
 
+
+import android.util.Log;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -16,12 +20,34 @@ import java.util.List;
  */
 public class PartyResultEventDeserialiser implements JsonDeserializer<List<Event>> {
 
+    public static final String TAG = PartyResultEventDeserialiser.class.getName();
     @Override
-    public List<Event> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<Event> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException  {
+
+        Log.e(TAG, "deserializando a objeto");
 
         Type listType = new TypeToken<List<Event>>(){}.getType();
-        JsonElement result = json.getAsJsonObject().get("Events");
+        Log.e("type", ""+listType.toString());
 
-        return new Gson().fromJson(result, listType);
+        //JsonElement results = json.getAsJsonObject(); //.get("results");
+        //Log.e("data", "" + results.getAsString());
+        JsonArray resultsArray = json.getAsJsonArray();
+        Log.e("data", " " + resultsArray.get(0));
+
+        JsonElement eventsObject = resultsArray.get(0);
+        JsonElement items = eventsObject.getAsJsonObject();
+
+
+        /*
+        JsonArray resultsArray = results.getAsJsonArray();
+        JsonElement comicsObject = resultsArray.get(0);
+        JsonElement items = comicsObject.getAsJsonObject().get("items");
+        Log.e("data", ""+results.getAsString());
+        //JsonArray resultsArray = results.getAsJsonArray();
+        */
+        return new Gson().fromJson(items , listType);
+
+
+
     }
 }

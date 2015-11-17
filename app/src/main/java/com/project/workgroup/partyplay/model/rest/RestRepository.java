@@ -21,6 +21,7 @@ import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 
+
 /**
  * Created by Junior on 10/11/2015.
  */
@@ -45,9 +46,14 @@ public class RestRepository implements Repository {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(cliente).build();
 
+
         mPartyApi = partyApiAdapter.create(PartyApi.class);
 
-        Log.e(TAG,"Se inyecto el repositorio :D ");
+        if(mPartyApi!=null){
+            Log.e(TAG,"Se inyecto el repositorio :D ");
+        }
+
+
     }
 
     @Override
@@ -58,12 +64,15 @@ public class RestRepository implements Repository {
 
     @Override
     public Observable<List<Event>> getEvents() {
-        Log.e(TAG, "se obtibieron los eventos");
+
         return mPartyApi.getEvents()
                 .onErrorResumeNext(throwable -> {
                     boolean serverError = throwable.getMessage().equals(HttpErrors.SERVER_ERROR);
+                    Log.e("error obtubiendo eventos", "" + throwable.toString());
                     return Observable.error((serverError) ? new ServerErrorException() : new UknownErrorException());
                 });
 
     }
+
+
 }
