@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.mingle.widget.LoadingView;
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.model.entities.Event;
 import com.project.workgroup.partyplay.mvp.views.EventsView;
@@ -31,7 +32,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
 
     RecyclerView mRecyclerView;
     EventsAdapter mEventsAdapter;
-    ProgressBar loadingView;
+    LoadingView loadingView;
     //LoadingView loadingView = new LoadingView(getContext());
 
     public static EventsFragment newInstance(String sectionTitle) {
@@ -75,7 +76,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_eents, container, false);
-        loadingView = (ProgressBar) rootView.findViewById(R.id.loadView);
+        loadingView = (LoadingView) rootView.findViewById(R.id.loadView);
         initializeRecyclerView(rootView);
         initializePresenter();
 

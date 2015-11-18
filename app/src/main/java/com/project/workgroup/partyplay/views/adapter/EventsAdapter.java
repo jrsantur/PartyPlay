@@ -75,13 +75,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             titleEvent.setText(event.getTitle());
             lugarEvent.setText(event.getNombre_lugar());
             Glide.with(mContext).load(event.getLogo()).crossFade().into(imageEvent);
-
         }
 
-        private void bindListener(View itemView , final RecyclerClickListener recyclerClickListener){
-            itemView.setOnClickListener(v ->
-                    recyclerClickListener.onElementClick(getPosition(),itemView ,imageEvent));
-        }
+
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_MOVE) {

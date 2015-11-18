@@ -3,23 +3,23 @@
     android:layout_height="match_parent"
     tools:context="com.project.workgroup.party.views.fragments.EventsFragment">
 
-    <!--
+
     <com.mingle.widget.LoadingView
         android:id="@+id/loadView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:visibility="gone"
-        -->
+
         />
-
-    <ProgressBar
-        android:id="@+id/loadView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
+    <!--
+        <ProgressBar
+            android:id="@+id/loadView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+     -->
     <com.project.workgroup.partyplay.views.custom_views.AutofitRecyclerView
         android:id="@+id/fragment_event_recycler"
         android:layout_width="match_parent"
@@ -29,4 +29,4 @@
         />
 
 
-</FrameLayout>
+    </FrameLayout>

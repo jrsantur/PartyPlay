@@ -8,13 +8,14 @@
     tools:showIn="@layout/activity_main"
     tools:context=".MainActivity">
 
-
+    <!--
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+        -->
 
         <FrameLayout
             android:id="@+id/main_content"
@@ -28,9 +29,10 @@
 
         </FrameLayout>
 
+    <!--
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
+-->
 
 
 

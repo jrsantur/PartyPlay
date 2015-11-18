@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(navigationView!=null){
             setupDrawerContent(navigationView);
         }
+        selectItem("Eventos");
         //navigationView.setNavigationItemSelectedListener(this);
 
         /*

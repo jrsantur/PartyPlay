@@ -29,23 +29,13 @@ public class PartyResultEventDeserialiser implements JsonDeserializer<List<Event
         Type listType = new TypeToken<List<Event>>(){}.getType();
         Log.e("type", ""+listType.toString());
 
-        //JsonElement results = json.getAsJsonObject(); //.get("results");
-        //Log.e("data", "" + results.getAsString());
         JsonArray resultsArray = json.getAsJsonArray();
-        Log.e("data", " " + resultsArray.get(0));
+        Log.e("data", " " + resultsArray.get(0) + " "+resultsArray.get(1));
 
         JsonElement eventsObject = resultsArray.get(0);
         JsonElement items = eventsObject.getAsJsonObject();
 
-
-        /*
-        JsonArray resultsArray = results.getAsJsonArray();
-        JsonElement comicsObject = resultsArray.get(0);
-        JsonElement items = comicsObject.getAsJsonObject().get("items");
-        Log.e("data", ""+results.getAsString());
-        //JsonArray resultsArray = results.getAsJsonArray();
-        */
-        return new Gson().fromJson(items , listType);
+        return new Gson().fromJson(resultsArray , listType);
 
 
 

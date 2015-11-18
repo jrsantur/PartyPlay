@@ -31,7 +31,7 @@ public class EventListPresenter implements Presenter {
     Subscription mEventsSubscription;
     private List<Event> mEvents;
     private EventsView mEventsView;
-    private boolean mIsTheCharacterRequestRunning;
+    private boolean mIsTheEventRequestRunning;
 
     @Inject  EventListPresenter(Context context, GetEventsUsecase mEventsUsecase){
         this.mContext = context;
@@ -41,7 +41,7 @@ public class EventListPresenter implements Presenter {
     }
 
     public void onListEndReached(){
-        if(!mIsTheCharacterRequestRunning){
+        if(!mIsTheEventRequestRunning){
             //askForNewEvents();
             Log.e(TAG, "estas en onListEndReached, final de la lista");
         }
@@ -49,22 +49,18 @@ public class EventListPresenter implements Presenter {
 
     @SuppressWarnings("Convert2MethodRef")
     private void askPorEvents() {
-        mIsTheCharacterRequestRunning = true;
+        mIsTheEventRequestRunning = true;
         showLoadingUI();
-        if(mEventsUsecase==null){
-            Log.e(".mEventsSubscription","es nulo");
-        }
         mEventsSubscription = mEventsUsecase.execute().subscribe(events -> {
             Log.e("EventListPresenter.mEventsSubscription","se ejecuto el metodo");
             mEvents.addAll(events);
             mEventsView.bindEventList(mEvents);
             mEventsView.showEventList();
-            mEventsView.hideEmptyIndicator();
-            mIsTheCharacterRequestRunning = false ;
+            mEventsView.hideLoadingView();
+            mIsTheEventRequestRunning = false ;
         }, this::showErrorView);
 
         //Log.e(TAG, "askPorEvents() called with: " + mEvents.get(0).getTitle().toString());
-        hideLoadingUI();
 
     }
 
@@ -101,8 +97,10 @@ public class EventListPresenter implements Presenter {
 
     @Override
     public void onPause() {
+
         mEventsSubscription.unsubscribe();
-        mIsTheCharacterRequestRunning = false;
+        mIsTheEventRequestRunning = false;
+
     }
 
     @Override
@@ -118,8 +116,11 @@ public class EventListPresenter implements Presenter {
 
     @Override
     public void onCreate() {
-        askPorEvents();
-        Log.e("EventListpresenter","estas en onCreate()");
+
+            askPorEvents();
+            Log.e("EventListpresenter","estas en onCreate()");
+
+
     }
 
 
