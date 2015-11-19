@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.project.workgroup.partyplay.PartyApplication;
 import com.project.workgroup.partyplay.R;
@@ -20,6 +21,9 @@ import com.project.workgroup.partyplay.injector.components.DaggerPartyComponent;
 import com.project.workgroup.partyplay.injector.modules.ActivityModule;
 import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
 import com.project.workgroup.partyplay.views.fragments.EventsFragment;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,27 +35,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = MainActivity.class.getName();
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    public static Toolbar toolbar;
+    public static ActionBarDrawerToggle toggle;
     @Bind(R.id.drawer_layout) DrawerLayout drawer;
     @Bind(R.id.nav_view) NavigationView navigationView;
     @Inject public static EventListPresenter eventListPresenter;
+
+
+    public static boolean isCurrentFragmentChild = false;
+    public static final int BACKPATTERN_BACK_ANYWHERE = 0;
+    public static final int BACKPATTERN_BACK_TO_FIRST = 1;
+    private int backPattern = BACKPATTERN_BACK_ANYWHERE;
+    private int defaultSectionLoaded = 0;
+
+    public  static  int section = 0;
+
+
+    private List<Fragment> childFragmentStack;
+    private List<String> childTitleStack;
+
+
+    private View.OnClickListener toolbarToggleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Log.e(TAG , "click en el toggle");
+            if(isCurrentFragmentChild) {
+                //onHomeAsUpSelected();
+                onBackPressed();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
+
+        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         initializeDependencyInjector();
         setSupportActionBar(toolbar);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        //inilialize  variables
+        childFragmentStack = new  LinkedList<>();
+        childTitleStack = new LinkedList<>();
+
+
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        if(navigationView!=null){
+        if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
         selectItem("Eventos");
@@ -64,9 +102,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         }*/
 
+        toggle.setToolbarNavigationClickListener(toolbarToggleListener);
+
     }
 
-    public void setupDrawerContent(NavigationView navigationView){
+
+    public void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             menuItem.setChecked(true);
             String title = menuItem.getTitle().toString();
@@ -88,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction()
                     .replace(R.id.main_content, fragment)
                     .commit();
+
+            section = 1;
         }
 
         drawer.closeDrawers();
@@ -101,9 +144,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+        if(!isCurrentFragmentChild){
+            switch (backPattern) {
+                case BACKPATTERN_BACK_TO_FIRST:
+                    if (section!=1){
+
+                    }
+                    else {
+                        super.onBackPressed();
+                    }
+
+                    break;
+            }
+        }else{
+            Fragment fragment= EventsFragment.newInstance("Eventos");
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.main_content, fragment).commit();
+        }
+    }
+
+    public void setBackPattern(int backPattern) {
+        this.backPattern = backPattern;
     }
 
 
@@ -171,4 +233,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //intent para la nueva actividad
     }
     */
+
+
+    public void setDefaultSectionLoaded(int sectionNumber) {
+        defaultSectionLoaded = sectionNumber;
+    }
+
+
+
 }

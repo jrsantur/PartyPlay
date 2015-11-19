@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:weightSum="3">
+
+
+    <ImageView
+        android:id="@+id/error_imagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gr_oops"
+        android:layout_weight="2.2"/>
+
+    <TextView
+        android:id="@+id/text_error_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:gravity="center"
+        android:text="¡Vaya!"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/text1_error_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.40"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="16sp"
+        android:text="Estamos teniendo problemas con conectarnos al servidor. Compruebe la conecciono vuelva a intentarlo mas tarde "/>
+
+    <Button
+        android:id="@+id/btn_re_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.15"
+        android:layout_gravity="center"
+        android:text="VOLVER A INTENTAR"
+        android:textSize="18sp"
+        android:background="@android:color/transparent"
+        />
+
+</LinearLayout>

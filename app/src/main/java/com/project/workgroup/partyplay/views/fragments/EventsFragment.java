@@ -3,6 +3,8 @@ package com.project.workgroup.partyplay.views.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.mingle.widget.LoadingView;
 import com.project.workgroup.partyplay.R;
@@ -75,7 +76,7 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_eents, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_events, container, false);
         loadingView = (LoadingView) rootView.findViewById(R.id.loadView);
         initializeRecyclerView(rootView);
         initializePresenter();
@@ -115,6 +116,14 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     @Override
     public void onElementClick(int position, View view  ,ImageView characterImageView) {
 
+        Fragment detailsFragment = new EventDetailsFragment().newInstance();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.frag_slide_in_from_bottom, 0);
+        transaction.replace(R.id.main_content, detailsFragment);
+        transaction.commit();
+        MainActivity.isCurrentFragmentChild = true;
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
