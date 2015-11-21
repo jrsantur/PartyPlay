@@ -1,6 +1,8 @@
 package com.project.workgroup.partyplay.views.activities;
 
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public  static  int section = 0;
 
 
-    private List<Fragment> childFragmentStack;
-    private List<String> childTitleStack;
+    private List<Fragment> fragmentStack;
+    private List<String> titleStack;
 
 
     private View.OnClickListener toolbarToggleListener = new View.OnClickListener() {
@@ -62,7 +64,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e(TAG , "click en el toggle");
             if(isCurrentFragmentChild) {
                 //onHomeAsUpSelected();
+                toggle.setDrawerIndicatorEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
                 onBackPressed();
+                setTitle("Eventos");
+
+
             }
         }
     };
@@ -80,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //inilialize  variables
-        childFragmentStack = new  LinkedList<>();
-        childTitleStack = new LinkedList<>();
+        fragmentStack = new  LinkedList<>();
+        titleStack = new LinkedList<>();
 
 
         toggle = new ActionBarDrawerToggle(
@@ -90,10 +98,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (navigationView != null) {
-            setupDrawerContent(navigationView);
+            navigationView.setNavigationItemSelectedListener(this);
         }
         selectItem("Eventos");
-        //navigationView.setNavigationItemSelectedListener(this);
+        //
 
         /*
         if(!PrefUtils.isTosAccepted(this)){
@@ -109,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
-            menuItem.setChecked(true);
+
             String title = menuItem.getTitle().toString();
             selectItem(title);
             return true;
@@ -124,11 +132,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(title.equals("Eventos")){
             args.putString(EventsFragment.ARG_SECTION_TITLE, title);
-            fragment = EventsFragment.newInstance(title);
-            fragment.setArguments(args);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.main_content, fragment)
-                    .commit();
+           // fragment = EventsFragment.newInstance(title);
+           // fragment.setArguments(args);
+
+            //fragmentManager.beginTransaction().replace(R.id.main_content, fragment).commit();
 
             section = 1;
         }
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
             }
         }else{
-            Fragment fragment= EventsFragment.newInstance("Eventos");
+            Fragment fragment= EventsFragment.newInstance();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.main_content, fragment).commit();
         }
@@ -210,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {
-            // Handle the camera action
+            item.setChecked(true);
+            setFragment(EventsFragment.newInstance() , item.getTitle().toString());
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -239,6 +247,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         defaultSectionLoaded = sectionNumber;
     }
 
+
+    @SuppressWarnings("deprecation")
+    public boolean networkConnection(){
+
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+        NetworkInfo[] netInfo = connectivityManager.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+
+    }
+
+
+    public void setFragment(Fragment fragment, String title){
+
+        if(!isCurrentFragmentChild){
+            if(fragmentStack.size()==0){
+                fragmentStack.add(fragment);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_content, fragment)
+                        .commit();
+                titleStack.add(title);
+                setTitle(title);
+            }
+        }
+    }
 
 
 }

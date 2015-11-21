@@ -14,7 +14,8 @@
     <com.project.workgroup.partyplay.views.custom_views.AutofitRecyclerView
         android:id="@+id/activity_preference_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
     </com.project.workgroup.partyplay.views.custom_views.AutofitRecyclerView>
 

@@ -36,11 +36,11 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     LoadingView loadingView;
     //LoadingView loadingView = new LoadingView(getContext());
 
-    public static EventsFragment newInstance(String sectionTitle) {
+    public static EventsFragment newInstance(/*String sectionTitle*/) {
         EventsFragment fragment = new EventsFragment();
         Bundle args = new Bundle();
-        args.getString(ARG_SECTION_TITLE, sectionTitle);
-        fragment.setArguments(args);
+        //args.getString(ARG_SECTION_TITLE, sectionTitle);
+        //fragment.setArguments(args);
         return fragment;
     }
 
