@@ -1,6 +1,7 @@
 package com.project.workgroup.partyplay.views.activities;
 
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,12 +17,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.project.workgroup.partyplay.PartyApplication;
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.injector.components.DaggerPartyComponent;
 import com.project.workgroup.partyplay.injector.modules.ActivityModule;
 import com.project.workgroup.partyplay.mvp.presenter.EventListPresenter;
+import com.project.workgroup.partyplay.utils.PrefUtils;
 import com.project.workgroup.partyplay.views.fragments.EventsFragment;
 
 import java.util.LinkedList;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ActionBarDrawerToggle toggle;
     @Bind(R.id.drawer_layout) DrawerLayout drawer;
     @Bind(R.id.nav_view) NavigationView navigationView;
+    public static ImageView  imgEventDeDeatails;
     @Inject public static EventListPresenter eventListPresenter;
 
 
@@ -67,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toggle.setDrawerIndicatorEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
-                onBackPressed();
                 setTitle("Eventos");
+                onBackPressed();
+
 
 
             }
@@ -78,10 +83,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!PrefUtils.isTosAccepted(this)){
+            Intent i = new Intent(this, XiaoMaIntroDemo.class);
+            startActivity(i);
+            finish();
+        }
+
+
         setContentView(R.layout.activity_main);
 
 
+
+
         ButterKnife.bind(this);
+        imgEventDeDeatails = (ImageView) findViewById(R.id.image_bar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         initializeDependencyInjector();
         setSupportActionBar(toolbar);
@@ -103,12 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         selectItem("Eventos");
         //
 
-        /*
-        if(!PrefUtils.isTosAccepted(this)){
-            Intent i = new Intent(this, WelcomeActivity.class);
-            startActivity(i);
-            finish();
-        }*/
+
 
         toggle.setToolbarNavigationClickListener(toolbarToggleListener);
 
@@ -284,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
 
 
 }

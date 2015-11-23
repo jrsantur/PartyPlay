@@ -14,16 +14,18 @@
 
         <activity
             android:name=".views.activities.MainActivity">
-
-
-        </activity>
-
-        <activity android:name=".views.activities.XiaoMaIntroDemo">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".views.activities.XiaoMaIntroDemo"
+            android:label="XMIntroDemo"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
 
 
         </activity>

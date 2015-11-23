@@ -1,6 +1,7 @@
 package com.project.workgroup.partyplay.views.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import android.widget.Scroller;
 
 import com.linfaxin.transitionplayer.TransitionPlayer;
 import com.project.workgroup.partyplay.R;
+import com.project.workgroup.partyplay.utils.PrefUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -72,6 +74,8 @@ public class XiaoMaIntroDemo extends Activity implements ViewPager.OnPageChangeL
         View.OnClickListener finishClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PrefUtils.markTosAccepted(XiaoMaIntroDemo.this);
+                startActivity(new Intent(XiaoMaIntroDemo.this, MainActivity.class));
                 finish();
             }
         };

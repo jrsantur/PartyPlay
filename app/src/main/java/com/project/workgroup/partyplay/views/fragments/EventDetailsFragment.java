@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.views.activities.MainActivity;
 
@@ -40,14 +41,21 @@ public class EventDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         MainActivity.toggle.setDrawerIndicatorEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Detalles del Evento");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Detalles del Evento");
-        return inflater.inflate(R.layout.fragment_event_details, container, false);
+
+        View rootVIew =  inflater.inflate(R.layout.fragment_event_details, container, false);
+        MainActivity.imgEventDeDeatails.setMinimumHeight(100);
+
+        Glide.with(this).load("http://nuuneoi.com/uploads/source/playstore/cover.jpg).in").into(MainActivity.imgEventDeDeatails);
+
+
+        return rootVIew;
 
     }
 

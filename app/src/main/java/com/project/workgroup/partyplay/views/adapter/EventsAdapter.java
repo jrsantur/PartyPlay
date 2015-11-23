@@ -71,10 +71,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         }
 
         public void bindEvent(Event event){
+            Glide.with(mContext).load(event.getLogo()).crossFade().into(imageEvent);
             fechaEvent.setText(event.getFecha());
             titleEvent.setText(event.getTitle());
             lugarEvent.setText(event.getNombre_lugar());
-            Glide.with(mContext).load(event.getLogo()).crossFade().into(imageEvent);
+
         }
 
 

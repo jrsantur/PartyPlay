@@ -56,7 +56,7 @@
         android:layout_below="@id/root_view"
         android:layout_marginTop="36dp"
         android:layout_centerHorizontal="true"
-        android:text="立即开启"
+        android:text="Comenzar"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="#003cff"
