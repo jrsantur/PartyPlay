@@ -1,10 +1,9 @@
 package com.project.workgroup.partyplay.views.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +17,7 @@ import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.model.entities.Event;
 import com.project.workgroup.partyplay.mvp.views.EventsView;
 import com.project.workgroup.partyplay.views.RecyclerClickListener;
+import com.project.workgroup.partyplay.views.activities.EventDetailsActivity;
 import com.project.workgroup.partyplay.views.activities.MainActivity;
 import com.project.workgroup.partyplay.views.adapter.EventsAdapter;
 import com.project.workgroup.partyplay.views.custom_views.RecyclerInsetsDecoration;
@@ -36,11 +36,11 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     LoadingView loadingView;
     //LoadingView loadingView = new LoadingView(getContext());
 
-    public static EventsFragment newInstance(/*String sectionTitle*/) {
+    public static EventsFragment newInstance(String sectionTitle) {
         EventsFragment fragment = new EventsFragment();
         Bundle args = new Bundle();
-        //args.getString(ARG_SECTION_TITLE, sectionTitle);
-        //fragment.setArguments(args);
+        args.getString(ARG_SECTION_TITLE, sectionTitle);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -58,19 +58,20 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     @Override
     public void onStop() {
         super.onStop();
-        MainActivity.eventListPresenter.onStop();
+        ((MainActivity)this.getActivity()).eventListPresenter.onStop();
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        MainActivity.eventListPresenter.onStart();
+        ((MainActivity)this.getActivity()).eventListPresenter.onStart();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.eventListPresenter.onPause();
+        ((MainActivity)this.getActivity()).eventListPresenter.onPause();
     }
 
     @Override
@@ -100,15 +101,15 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
             int firstVisibleItemPos = layoutManager.findFirstVisibleItemPosition();
 
             if (visibleItemsCount + firstVisibleItemPos >= totalItemsCount) {
-                MainActivity.eventListPresenter.onListEndReached();
+                ((MainActivity)getActivity()).eventListPresenter.onListEndReached();
             }
         }
     };
 
 
     private void initializePresenter(){
-        MainActivity.eventListPresenter.attachView(this);
-        MainActivity.eventListPresenter.onCreate();
+        ((MainActivity)this.getActivity()).eventListPresenter.attachView(this);
+        ((MainActivity)this.getActivity()).eventListPresenter.onCreate();
         Log.e("EventsFragment", "se inicialializo el presenter");
     }
 
@@ -116,14 +117,17 @@ public class EventsFragment extends Fragment implements EventsView, RecyclerClic
     @Override
     public void onElementClick(int position, View view  ,ImageView characterImageView) {
 
+        /*
         Fragment detailsFragment = new EventDetailsFragment().newInstance();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.frag_slide_in_from_bottom, 0);
         transaction.replace(R.id.main_content, detailsFragment);
         transaction.commit();
-        MainActivity.isCurrentFragmentChild = true;
+        ((MainActivity)this.getActivity()).isCurrentFragmentChild = true;
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        */
+        startActivity(new Intent(getActivity(), EventDetailsActivity.class));
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.project.workgroup.partyplay.R;
 import com.project.workgroup.partyplay.views.activities.MainActivity;
 
@@ -40,6 +39,7 @@ public class EventDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainActivity.toggle.setDrawerIndicatorEnabled(false);
+        ((MainActivity)this.getActivity()).toolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Detalles del Evento");
     }
@@ -50,10 +50,6 @@ public class EventDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootVIew =  inflater.inflate(R.layout.fragment_event_details, container, false);
-        MainActivity.imgEventDeDeatails.setMinimumHeight(100);
-
-        Glide.with(this).load("http://nuuneoi.com/uploads/source/playstore/cover.jpg).in").into(MainActivity.imgEventDeDeatails);
-
 
         return rootVIew;
 

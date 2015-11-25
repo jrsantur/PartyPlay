@@ -40,15 +40,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = MainActivity.class.getName();
 
-    public static Toolbar toolbar;
+    public  Toolbar toolbar;
     public static ActionBarDrawerToggle toggle;
     @Bind(R.id.drawer_layout) DrawerLayout drawer;
     @Bind(R.id.nav_view) NavigationView navigationView;
+
     public static ImageView  imgEventDeDeatails;
-    @Inject public static EventListPresenter eventListPresenter;
+    @Inject public EventListPresenter eventListPresenter;
 
 
-    public static boolean isCurrentFragmentChild = false;
+    public boolean isCurrentFragmentChild = false;
     public static final int BACKPATTERN_BACK_ANYWHERE = 0;
     public static final int BACKPATTERN_BACK_TO_FIRST = 1;
     private int backPattern = BACKPATTERN_BACK_ANYWHERE;
@@ -85,23 +86,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         if(!PrefUtils.isTosAccepted(this)){
-            Intent i = new Intent(this, XiaoMaIntroDemo.class);
-            startActivity(i);
+            startActivity(new Intent(this, XiaoMaIntroDemo.class));
             finish();
         }
-
-
         setContentView(R.layout.activity_main);
-
-
-
-
         ButterKnife.bind(this);
-        imgEventDeDeatails = (ImageView) findViewById(R.id.image_bar);
+        //imgEventDeDeatails = (ImageView) findViewById(R.id.image_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         initializeDependencyInjector();
         setSupportActionBar(toolbar);
-
 
         //inilialize  variables
         fragmentStack = new  LinkedList<>();
@@ -114,17 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(this);
+           // navigationView.setNavigationItemSelectedListener(this);
+            setupDrawerContent(navigationView);
         }
-        selectItem("Eventos");
-        //
-
-
 
         toggle.setToolbarNavigationClickListener(toolbarToggleListener);
 
     }
-
 
     public void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(menuItem -> {
@@ -134,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         });
 
-
     }
     private void selectItem(String title){
         Bundle args = new Bundle();
@@ -143,11 +131,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(title.equals("Eventos")){
             args.putString(EventsFragment.ARG_SECTION_TITLE, title);
-           // fragment = EventsFragment.newInstance(title);
-           // fragment.setArguments(args);
-
-            //fragmentManager.beginTransaction().replace(R.id.main_content, fragment).commit();
-
+            fragment = EventsFragment.newInstance(title);
+            fragment.setArguments(args);
+            fragmentManager.beginTransaction().replace(R.id.main_content, fragment).commit();
             section = 1;
         }
 
@@ -176,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
             }
         }else{
-            Fragment fragment= EventsFragment.newInstance();
+            Fragment fragment= EventsFragment.newInstance("Eventos");
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.main_content, fragment).commit();
         }
@@ -229,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_camara) {
             item.setChecked(true);
-            setFragment(EventsFragment.newInstance() , item.getTitle().toString());
+            //setFragment(EventsFragment.newInstance() , item.getTitle().toString());
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
